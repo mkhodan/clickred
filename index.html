@@ -4,11 +4,34 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h2 id="score">Score: 0</h2>
-    <button id='newgame'>New Game</button>
-    <div id="main">
-
+    <div id="playfield">
+      <h2 id="score">Score: 0</h2>
+      <button id='newgame'>New Game</button>
+      <div id="main"></div>
     </div>
+
+    <div id="submitter">
+      <h2 id="sb_score">Score: 0</h2>
+      <ol id="top_scores">
+
+      </ol>
+      <input id="sb_name" type="text" placeholder="name">
+      <input id="sb_submit" type="submit" onClick="submitScore()">
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDhfpL1ARZXn9I2RYg9oMWuTfLF4WOYnNk",
+        authDomain: "clickred-af2cc.firebaseapp.com",
+        databaseURL: "https://clickred-af2cc.firebaseio.com",
+        projectId: "clickred-af2cc",
+        storageBucket: "clickred-af2cc.appspot.com",
+        messagingSenderId: "665439511812"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="logic.js"></script>
   </body>
 </html>

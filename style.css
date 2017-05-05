@@ -29,3 +29,17 @@
 .bad{
   background-color: brown;
 }
+
+#submitter{
+  width: 200px;
+  height: 100px;
+  margin: 100px auto;
+  background-color: rgb(162, 154, 156);
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+}
+#sb_submit{
+  margin: 15px;
+
+}

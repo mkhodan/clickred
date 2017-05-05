@@ -26,19 +26,38 @@ document.getElementById('main').addEventListener('click', (event)=>{
     document.getElementById('score').innerHTML = 'Score: ' + score;
     startGame();
   } else if(target.className.includes('bad')){
-    document.getElementById('score').innerHTML = 'Score: ' + score + ', GAME OVER!';
-    isGameActive = false;
-    clearTimeout(timeoutid);
+    gameOver();
   } else {
-    document.getElementById('score').innerHTML = 'Score: ' + score + ', GAME OVER!';
-    isGameActive = false;
-    clearTimeout(timeoutid);
+    gameOver();
   }
 });
 
 function eraseAll(){
-  timeoutSeconds -= 50;
+  timeoutSeconds -= timeoutSeconds*0.02;
   document.getElementById('main').innerHTML = '';
+}
+
+function gameOver(){
+  document.getElementById('sb_score').innerHTML = 'Score: ' + score;
+  isGameActive = false;
+  clearTimeout(timeoutid);
+  document.getElementById('playfield').style.display = 'none';
+  document.getElementById('submitter').style.display = 'block';
+  let scores =[];
+  firebase.database().ref('/scores').once("value", function(data) {
+    for(let sc in data.val()){
+      scores.push(data.val()[sc]);
+    }
+    console.log(scores);
+  });
+  // firebase.database().ref('/scores').push({name:name||'guest',score: score});
+}
+
+function submitScore(){
+  let name = document.getElementById("sb_name").value;
+  firebase.database().ref('/scores').push({name:name||'guest',score: score});
+  document.getElementById('playfield').style.display = 'block';
+  document.getElementById('submitter').style.display = 'none';
 }
 
 function drawAll(){
@@ -51,8 +70,7 @@ function startGame(){
   eraseAll();
   drawAll();
   timeoutid = setTimeout(function () {
-    document.getElementById('score').innerHTML = 'Score: ' + score + ', GAME OVER!';
-    isGameActive = false;
+    gameOver();
   }, timeoutSeconds);
 }
 

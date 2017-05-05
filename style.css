@@ -1,0 +1,31 @@
+*{
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+#main{
+  position: relative;
+  width: 1200px;
+  height: 800px;
+  background-color: rgb(207, 205, 210);
+  border: 1px solid black;
+  margin: 50px auto;
+}
+
+.item{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+}
+
+.good{
+  background-color: red;
+}
+
+.bad{
+  background-color: brown;
+}

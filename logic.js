@@ -4,6 +4,7 @@ let score = 0;
 let isGameActive = true;
 let timeoutid = 0;
 let timeoutSeconds = 3000;
+let skipCount = 0;
 startGame();
 
 document.getElementById('newgame').addEventListener('click', (event)=>{
@@ -12,6 +13,8 @@ document.getElementById('newgame').addEventListener('click', (event)=>{
   document.getElementById('score').innerHTML = 'Score: ' + score;
   goodBlocksCount = 1;
   badBlocksCount = 1;
+  timeoutSeconds = 3000;
+  skipCount = 0;
   startGame();
 });
 
@@ -44,10 +47,16 @@ function drawAll(){
 
 function startGame(){
   clearTimeout(timeoutid);
+  if(skipCount === 10){
+    document.getElementById('score').innerHTML = 'Score: ' + score + ', GAME OVER!';
+    isGameActive = false;
+    return;
+  }
   eraseAll();
   drawAll();
   timeoutid = setTimeout(function () {
     timeoutSeconds -= 50;
+    skipCount++;
     startGame();
   }, timeoutSeconds);
 }

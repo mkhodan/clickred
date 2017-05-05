@@ -17,6 +17,7 @@ document.getElementById('newgame').addEventListener('click', (event)=>{
 });
 
 document.getElementById('main').addEventListener('click', (event)=>{
+  console.log(timeoutSeconds);
   if(isPrime(score))badBlocksCount++;
   if(!isGameActive) return;
   let target = event.target;
@@ -36,7 +37,7 @@ document.getElementById('main').addEventListener('click', (event)=>{
 });
 
 function eraseAll(){
-  timeoutSeconds -= 10;
+  timeoutSeconds -= 50;
   document.getElementById('main').innerHTML = '';
 }
 

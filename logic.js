@@ -3,6 +3,7 @@ let badBlocksCount = 1;
 let score = 0;
 let isGameActive = true;
 let timeoutid = 0;
+let timeoutSeconds = 3000;
 startGame();
 
 document.getElementById('newgame').addEventListener('click', (event)=>{
@@ -25,12 +26,14 @@ document.getElementById('main').addEventListener('click', (event)=>{
   } else if(target.className.includes('bad')){
     document.getElementById('score').innerHTML = 'Score: ' + score + ', GAME OVER!';
     isGameActive = false;
+    clearTimeout(timeoutid);
   } else {
     startGame();
   }
 });
 
 function eraseAll(){
+  timeoutSeconds -= 10;
   document.getElementById('main').innerHTML = '';
 }
 
@@ -44,8 +47,9 @@ function startGame(){
   eraseAll();
   drawAll();
   timeoutid = setTimeout(function () {
+    timeoutSeconds -= 50;
     startGame();
-  }, 3000);
+  }, timeoutSeconds);
 }
 
 function isPrime(value) {

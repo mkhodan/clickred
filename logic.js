@@ -159,7 +159,7 @@ function initBadBlocks(){
 
 function initExtraGoodBlocks(){
   let bestBlockPossibility = Math.floor(Math.random() * 100);
-  if(bestBlockPossibility > 55){
+  if(bestBlockPossibility > 85){
     let block = document.createElement('div');
     block.className = 'item best';
     block.style.top = Math.floor(Math.random() * 615);

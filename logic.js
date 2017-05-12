@@ -63,7 +63,11 @@ document.getElementById('main').addEventListener('click', (event)=>{
     score++;
     document.getElementById('score').innerHTML = 'Score: ' + score;
     startGame();
-  } else if(target.className.includes('bad')){
+  } else if (target.className.includes('best')){
+    score += 10;
+    document.getElementById('score').innerHTML = 'Score: ' + score;
+    startGame();
+  } else if (target.className.includes('bad')){
     gameOver();
   } else {
     gameOver();
@@ -111,6 +115,7 @@ function submitScore(){
 function drawAll(){
   initGoodBlocks();
   initBadBlocks();
+  initExtraGoodBlocks();
 }
 
 function startGame(){
@@ -146,6 +151,17 @@ function initBadBlocks(){
   for(let i = 0; i < badBlocksCount; i++){
     let block = document.createElement('div');
     block.className = 'item bad';
+    block.style.top = Math.floor(Math.random() * 615);
+    block.style.left = Math.floor(Math.random() * 975);
+    document.getElementById('main').appendChild(block);
+  }
+}
+
+function initExtraGoodBlocks(){
+  let bestBlockPossibility = Math.floor(Math.random() * 100);
+  if(bestBlockPossibility > 55){
+    let block = document.createElement('div');
+    block.className = 'item best';
     block.style.top = Math.floor(Math.random() * 615);
     block.style.left = Math.floor(Math.random() * 975);
     document.getElementById('main').appendChild(block);

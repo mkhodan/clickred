@@ -33,6 +33,9 @@
 .bad{
   background-color: brown;
 }
+.best{
+  background-color: green;
+}
 
 #submitter{
   width: 200px;

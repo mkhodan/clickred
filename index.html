@@ -6,17 +6,21 @@
   <body>
     <div id="playfield">
       <h2 id="score">Score: 0</h2>
-      <button id='newgame'>New Game</button>
       <div id="main"></div>
     </div>
 
     <div id="submitter">
       <h2 id="sb_score">Score: 0</h2>
-      <ol id="top_scores">
+      <table id="top_scores">
 
-      </ol>
-      <input id="sb_name" type="text" placeholder="name">
-      <input id="sb_submit" type="submit" onClick="submitScore()">
+      </table>
+      <div id="sb_area">
+        <input id="sb_name" type="text" placeholder="name">
+        <input id="sb_submit" type="submit" onClick="submitScore()">
+      </div>
+      <div id="ng_area">
+        <input id="ng_submit" type="submit" value="New game" onClick="restart()">
+      </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>

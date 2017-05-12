@@ -4,9 +4,46 @@ let score = 0;
 let isGameActive = true;
 let timeoutid = 0;
 let timeoutSeconds = 3000;
+let scores = [];
+loadScores();
 startGame();
 
-document.getElementById('newgame').addEventListener('click', (event)=>{
+function loadScores(){
+  scores = [];
+  firebase.database().ref('/scores').once("value", function(data) {
+    for(let sc in data.val()){
+      scores.push(
+        {
+          score:data.val()[sc].score,
+          name:data.val()[sc].name,
+          key:sc,
+        }
+    );
+    }
+    scores = scores.sort((a,b)=>{
+      return b.score - a.score;
+    });
+    let scOl = document.getElementById('top_scores');
+    scOl.innerHTML = "";
+    for(let i = 0; i < scores.length; i++){
+      let item = document.createElement('tr');
+      let td1 = document.createElement('td');
+      let td2 = document.createElement('td');
+      let td3 = document.createElement('td');
+      td1.innerHTML = i + 1;
+      td2.innerHTML = scores[i].name;
+      td3.innerHTML = scores[i].score;
+      item.appendChild(td1);
+      item.appendChild(td2);
+      item.appendChild(td3);
+      scOl.appendChild(item);
+    }
+  });
+}
+
+function restart(){
+  document.getElementById('playfield').style.display = 'block';
+  document.getElementById('submitter').style.display = 'none';
   isGameActive = true;
   score = 0;
   document.getElementById('score').innerHTML = 'Score: ' + score;
@@ -14,7 +51,8 @@ document.getElementById('newgame').addEventListener('click', (event)=>{
   badBlocksCount = 1;
   timeoutSeconds = 3000;
   startGame();
-});
+}
+
 
 document.getElementById('main').addEventListener('click', (event)=>{
   console.log(timeoutSeconds);
@@ -33,7 +71,7 @@ document.getElementById('main').addEventListener('click', (event)=>{
 });
 
 function eraseAll(){
-  timeoutSeconds -= timeoutSeconds*0.02;
+  timeoutSeconds -= timeoutSeconds * 0.02;
   document.getElementById('main').innerHTML = '';
 }
 
@@ -43,21 +81,31 @@ function gameOver(){
   clearTimeout(timeoutid);
   document.getElementById('playfield').style.display = 'none';
   document.getElementById('submitter').style.display = 'block';
-  let scores =[];
-  firebase.database().ref('/scores').once("value", function(data) {
-    for(let sc in data.val()){
-      scores.push(data.val()[sc]);
-    }
-    console.log(scores);
-  });
-  // firebase.database().ref('/scores').push({name:name||'guest',score: score});
+
+  if(scores.length === 0){
+    document.getElementById('ng_area').style.display = 'none';
+    document.getElementById('sb_area').style.display = 'block';
+  } else if(score > scores[scores.length - 1].score || scores.length < 10){
+    document.getElementById('ng_area').style.display = 'none';
+    document.getElementById('sb_area').style.display = 'block';
+  } else{
+    document.getElementById('ng_area').style.display = 'block';
+    document.getElementById('sb_area').style.display = 'none';
+  }
 }
 
 function submitScore(){
   let name = document.getElementById("sb_name").value;
-  firebase.database().ref('/scores').push({name:name||'guest',score: score});
-  document.getElementById('playfield').style.display = 'block';
-  document.getElementById('submitter').style.display = 'none';
+  if(scores.length === 0){
+    firebase.database().ref('/scores').push({name:name||'guest',score: score});
+  } else if(scores.length < 10){
+    firebase.database().ref('/scores').push({name:name||'guest',score: score});
+  }else if(score > scores[scores.length - 1].score){
+    firebase.database().ref('/scores').child(scores[scores.length - 1].key).remove();
+    firebase.database().ref('/scores').push({name:name||'guest',score: score});
+  }
+  loadScores();
+  restart();
 }
 
 function drawAll(){
@@ -84,11 +132,12 @@ function isPrime(value) {
 }
 
 function initGoodBlocks(){
+  let leMain = document.getElementById('main');
   for(let i = 0; i < goodBlocksCount; i++){
     let block = document.createElement('div');
     block.className = 'item good';
-    block.style.top = Math.floor(Math.random() * 775);
-    block.style.left = Math.floor(Math.random() * 1175);
+    block.style.top = Math.floor(Math.random() * 615);
+    block.style.left = Math.floor(Math.random() * 975);
     document.getElementById('main').appendChild(block);
   }
 }
@@ -97,8 +146,8 @@ function initBadBlocks(){
   for(let i = 0; i < badBlocksCount; i++){
     let block = document.createElement('div');
     block.className = 'item bad';
-    block.style.top = Math.floor(Math.random() * 775);
-    block.style.left = Math.floor(Math.random() * 1175);
+    block.style.top = Math.floor(Math.random() * 615);
+    block.style.left = Math.floor(Math.random() * 975);
     document.getElementById('main').appendChild(block);
   }
 }

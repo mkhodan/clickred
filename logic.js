@@ -1,3 +1,4 @@
+()=>{
 let goodBlocksCount = 1;
 let badBlocksCount = 1;
 let score = 0;
@@ -167,3 +168,4 @@ function initExtraGoodBlocks(){
     document.getElementById('main').appendChild(block);
   }
 }
+}();
